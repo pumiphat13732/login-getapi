@@ -1,0 +1,19 @@
+{
+  "name": "login-getapi",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt build && nuxt export"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.11.0",
+    "nuxt": "^2.13.0",
+    "vee-validate": "^3.3.5"
+  },
+  "devDependencies": {
+    "@nuxt/typescript-build": "^1.0.3"
+  }
+}
