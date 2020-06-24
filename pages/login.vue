@@ -1,18 +1,20 @@
 <template>
   <div>
-    <ValidationProvider rules="required" v-slot="{errors}">
-      <div style="margin-top: 10px"><h1 style="color: #3b8070">Login</h1></div>
-      <div style="margin-top: 10px"><h3 style="color: orangered">E-mail</h3></div>
-      <input v-model="email" type="text" style="margin-top: 10px">
-      <span>{{ errors[0] }}</span>
-    </ValidationProvider>
-    <ValidationProvider rules="required" v-slot="{errors}">
-      <div style="margin-top: 10px"><h3 style="color: orangered">Password</h3></div>
-      <input v-model="password" type="password" style="margin-top: 10px">
-      <span>{{ errors[0] }}</span>
-    </ValidationProvider>
-    <br/>
-    <button style="margin-top: 10px; margin-bottom: 50px; color: aquamarine;" @click="gologin">Login</button>
+    <div id="hidden">
+      <ValidationProvider rules="required" v-slot="{errors}">
+        <div style="margin-top: 10px"><h1 style="color: #3b8070">Login</h1></div>
+        <div style="margin-top: 10px"><h3 style="color: orangered">E-mail</h3></div>
+        <input v-model="email" type="text" style="margin-top: 10px">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <ValidationProvider rules="required" v-slot="{errors}">
+        <div style="margin-top: 10px"><h3 style="color: orangered">Password</h3></div>
+        <input v-model="password" type="password" style="margin-top: 10px">
+        <span>{{ errors[0] }}</span>
+      </ValidationProvider>
+      <br/>
+      <button style="margin-top: 10px; margin-bottom: 50px; color: aquamarine;" @click="gologin">Login</button>
+    </div>
     <div class="grid-card" id="show">
       <div
         v-for="i in results"
@@ -48,6 +50,7 @@
     methods: {
       gologin() {
         document.getElementById("show").style.visibility = "visible";
+        document.getElementById("hidden").style.display = "none";
         const url = `https://reqres.in/api/users`
         axios.get(url).then((res) => {
           console.log(res.data.data)
@@ -85,7 +88,7 @@
     background-color: #BEE9E8;
     padding: 10px;
     border-radius: 10px;
-    visibility:hidden;
+    visibility: hidden;
   }
 
 </style>
