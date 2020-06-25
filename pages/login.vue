@@ -13,7 +13,7 @@
         <span>{{ errors[0] }}</span>
       </ValidationProvider>
       <br/>
-      <button style="margin-top: 10px; margin-bottom: 50px; color: aquamarine;" @click="gologin">Login</button>
+      <button style="margin-top: 10px; margin-bottom: 50px; color: aquamarine;" @click="handleClickLogin">Login</button>
     </div>
     <div class="grid-card" id="show">
       <div
@@ -33,7 +33,8 @@
 
 <script>
   import {ValidationProvider} from 'vee-validate';
-  import axios from 'axios'
+  import vuex from 'vuex'
+
 
   export default {
     components: {
@@ -55,16 +56,30 @@
         axios.get(url).then((res) => {
           console.log(res.data.data)
           this.results = res.data.data
-
-
         })
-      }
+      },
 
+          handleClickLogin(){
+            console.log(this.email,this.password)
+            this.$store.dispatch('Login',{
+              email: this.email,
+              password: this.password,
+            }).then(success =>{
+              console.log('success')
+            })
+            .catch(error =>{
+              console.log(error)
+              // console.log(error.response.data)
+              // console.log(error.response.status)
+              // console.log(error.response.headers)
+
+            })
+
+          }
     }
 
   }
 </script>
-
 <style scoped lang="css">
   .card {
     padding: 20px 20px 20px 20px;
@@ -72,16 +87,12 @@
     background: #ffffff;
     border-radius: 10px;
   }
-
   .card h3 {
     margin-top: 10px;
   }
-
   .card img {
     margin: auto;
   }
-
-
   .grid-card {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

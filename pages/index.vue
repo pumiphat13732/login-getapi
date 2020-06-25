@@ -1,9 +1,9 @@
 <template>
   <div style="margin: 10%">
-    <div>Counter is : {{$store.state.counter }}</div>
-    <div>
-      <button @click="increment" style="margin-top: 10px"> Add data</button>
-    </div>
+<!--    <div>Counter is : {{$store.state.counter }}</div>-->
+<!--    <div>-->
+<!--      <button @click="increment" style="margin-top: 10px"> Add data</button>-->
+<!--    </div>-->
     <login></login>
 
   </div>
