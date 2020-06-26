@@ -1,33 +1,33 @@
 <template>
   <div>
-    <div id="hidden">
-      <ValidationProvider rules="required" v-slot="{errors}">
-        <div style="margin-top: 10px"><h1 style="color: #3b8070">Login</h1></div>
-        <div style="margin-top: 10px"><h3 style="color: orangered">E-mail</h3></div>
-        <input v-model="email" type="text" style="margin-top: 10px">
-        <span>{{ errors[0] }}</span>
-      </ValidationProvider>
-      <ValidationProvider rules="required" v-slot="{errors}">
-        <div style="margin-top: 10px"><h3 style="color: orangered">Password</h3></div>
-        <input v-model="password" type="password" style="margin-top: 10px">
-        <span>{{ errors[0] }}</span>
-      </ValidationProvider>
-      <br/>
-      <button style="margin-top: 10px; margin-bottom: 50px; color: aquamarine;" @click="handleClickLogin">Login</button>
+    <div>
+      <form @submit.prevent="handleClickLogin">
+        <div class="row ">
+          <div class="col-md-6 mt-5 mx-auto">
+            <div class="form-group">
+              <div><h3 class="h1 mb-3 font-weight-bold">Sign in</h3></div>
+            </div>
+            <div class="form-group">
+              <ValidationProvider rules="required" v-slot="{errors}">
+                <div><h3>E-mail</h3></div>
+                <input v-model="email" type="text" class="form-control">
+                <span>{{ errors[0] }}</span>
+              </ValidationProvider>
+            </div>
+            <div class="form-group">
+              <ValidationProvider rules="required" v-slot="{errors}">
+                <div><h3>Password</h3></div>
+                <input v-model="password" type="password" class="form-control">
+                <span>{{ errors[0] }}</span>
+              </ValidationProvider>
+            </div>
+            <br/>
+            <button class="btn btn-lg btn-primary btn-block " type="submit">Sign in</button>
+          </div>
+        </div>
+      </form>
     </div>
-    <div class="grid-card" id="show">
-      <div
-        v-for="i in results"
-        :key="i.data"
-        class="card"
-      >
-        <img :src="i.avatar" alt="">
-        <h3>{{i.email}}</h3>
-        <h3>{{i.first_name}}</h3>
-        <h3>{{i.last_name}}</h3>
-        <h3>id:{{i.id}}</h3>
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -37,27 +37,18 @@
 
 
   export default {
+    layout: "main",
     components: {
       ValidationProvider
     },
     data() {
       return {
-        data: '',
         email: 'eve.holt@reqres.in',
         password: 'cityslicka',
-        results: []
       }
     },
     methods: {
-      gologin() {
-        document.getElementById("show").style.visibility = "visible";
-        document.getElementById("hidden").style.display = "none";
-        const url = `https://reqres.in/api/users`
-        axios.get(url).then((res) => {
-          console.log(res.data.data)
-          this.results = res.data.data
-        })
-      },
+
 
           handleClickLogin(){
             console.log(this.email,this.password)
@@ -65,7 +56,8 @@
               email: this.email,
               password: this.password,
             }).then(success =>{
-              console.log('success')
+              console.log('Loginsuccess')
+              this.$router.push("/home")
             })
             .catch(error =>{
               console.log(error)
@@ -99,7 +91,7 @@
     background-color: #BEE9E8;
     padding: 10px;
     border-radius: 10px;
-    visibility: hidden;
+
   }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 10%">
+  <div>
 <!--    <div>Counter is : {{$store.state.counter }}</div>-->
 <!--    <div>-->
 <!--      <button @click="increment" style="margin-top: 10px"> Add data</button>-->
@@ -14,6 +14,7 @@
   import Login from "./login"
 
   export default {
+    layout:'main',
     // fetch(context) is called by the server-side
     // and before instantiating the component
     components: {

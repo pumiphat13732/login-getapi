@@ -1,4 +1,3 @@
-
 export default {
   target: 'static',
   /*
@@ -13,24 +12,26 @@ export default {
   head: {
     title: process.env.npm_package_name || '',
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      {charset: 'utf-8'},
+      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      {hid: 'description', name: 'description', content: process.env.npm_package_description || ''}
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
     ]
   },
   /*
   ** Global CSS
   */
   css: [
+    '@/assets/css/bootstrap.css'
   ],
+  js:['@/assets/js/bootstrap.js'],
   /*
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins
   */
-  plugins:  ["~/plugins/vee-validate.js"],
+  plugins: ["~/plugins/vee-validate.js"],
   /*
   ** Nuxt.js dev-modules
   */
@@ -43,6 +44,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
   ],
   /*
   ** Axios module configuration
