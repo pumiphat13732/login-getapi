@@ -2,6 +2,7 @@ import * as axios from 'axios';
 
 export const state = () => ({
   token:localStorage.getItem('access_token')||'',
+
   counter: 0
 })
 export const mutations = {

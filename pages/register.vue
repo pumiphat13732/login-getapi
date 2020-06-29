@@ -34,7 +34,7 @@
 
 
   export default {
-    layout: "main",
+    layout: 'main',
     components: {
       ValidationProvider
     },

@@ -5,6 +5,7 @@
       <a v-if="$store.state.token == ''" href="/login">Login</a>
       <a v-if="$store.state.token == ''" href="/register">Register</a>
       <a v-if="$store.state.token != ''" @click="handleClickLogout">Logout</a>
+
     </div>
     <nuxt/>
   </div>
