@@ -8,7 +8,7 @@
               <div><h3 class="h1 mb-3 font-weight-bold">Sign in</h3></div>
             </div>
             <div class="form-group">
-              <ValidationProvider rules="required" v-slot="{errors}">
+              <ValidationProvider rules="required|email" v-slot="{errors}">
                 <div><h3>E-mail</h3></div>
                 <input v-model="email" type="text" class="form-control">
                 <span>{{ errors[0] }}</span>
@@ -52,7 +52,7 @@
 
           handleClickLogin(){
             console.log(this.email,this.password)
-            this.$store.dispatch('Login',{
+            this.$store.dispatch('login',{
               email: this.email,
               password: this.password,
             }).then(success =>{

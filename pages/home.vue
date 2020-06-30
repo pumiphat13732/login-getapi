@@ -2,21 +2,32 @@
   <div>
     <div class="posbtn">
       <div class="postion">
-        <button type="button" class="btn btn-light" @click="createuser">Create</button>
-        <button type="button" class="btn btn-light">Update</button>
-        <button type="button" class="btn btn-light">Delete</button>
+        <button type="button" class="btn btn-light" @click="createUser">Create</button>
       </div>
       <br>
       <br>
-      <form @submit.prevent="createusertable" v-if="hidetable !=0">
+      <form @submit.prevent="createUserTable" v-if="hidetable !=0">
+
         <p class="postion">E-mail</p>
-        <input class="postion" type="text" v-model="email">
+        <ValidationProvider rules="required|email" v-slot="{errors}">
+          <input class="postion" type="text" v-model="email">
+          <span>{{ errors[0] }}</span>
+        </ValidationProvider>
         <p class="postion">Username</p>
-        <input class="postion" type="text" v-model="name">
+        <ValidationProvider rules="required" v-slot="{errors}">
+          <input class="postion" type="text" v-model="name">
+          <span>{{ errors[0] }}</span>
+        </ValidationProvider>
         <p class="postion">Lastname</p>
-        <input class="postion" type="text" v-model="lastname">
+        <ValidationProvider rules="required" v-slot="{errors}">
+          <input class="postion" type="text" v-model="lastname">
+          <span>{{ errors[0] }}</span>
+        </ValidationProvider>
         <p class="postion">Job</p>
-        <input class="postion" type="text" v-model="job">
+        <ValidationProvider rules="required" v-slot="{errors}">
+          <input class="postion" type="text" v-model="job">
+          <span>{{ errors[0] }}</span>
+        </ValidationProvider>
         <br><br>
         <button type="submit" class="btn btn-success postion">Summit</button>
       </form>
@@ -42,32 +53,38 @@
 
     <div
     >
-      <table id="customers" v-if="hidetable != 1">
+      <table id="customers" v-if="hidetable !== 1">
         <tr>
-          <th>Avatar</th>
-          <th>Email</th>
-          <th>First Name</th>
-          <th>Last Name</th>
+          <th>Body</th>
           <th>ID</th>
+          <th>Title</th>
+          <th>UserID</th>
+          <th>Option</th>
+
         </tr>
-        <tr v-for="i in results"
-            :key="i.data">
-          <td><img :src="i.avatar" alt=""></td>
-          <td>{{i.email}}</td>
-          <td>{{i.first_name}}</td>
-          <td>{{i.last_name}}</td>
-          <td>{{i.id}}</td>
+
+        <tr v-for="n in printData(results)">
+          <td>{{n.body}}</td>
+          <td>{{n.id}}</td>
+          <td>{{n.title}}</td>
+          <td>{{n.userId}}</td>
+          <b-button class="postion1" @click="getDetail(n)">Detail</b-button>
+          <b-button class="postion1" @click="getEdit(n)">Edit</b-button>
+          <b-button class="postion1" @click="getDelete(n)">Delete</b-button>
         </tr>
+
+
       </table>
     </div>
 
     <div class="btn-position" v-if="hidetable != 1">
-      <<:
-      <a v-for="n in total_pages"
+      <
+      <:
+      <a v-for="n in (Math.ceil(datasize/pagesize))"
          id="myDIV"
          class="a-page"
          href="#"
-         @click="changevalue(n)"
+         @click="changeValue(n)"
       >{{n}}
       </a>
       :>>
@@ -79,13 +96,16 @@
 <script>
   import * as axios from 'axios'
   import vuex from 'vuex'
+  import {ValidationProvider} from "vee-validate";
 
   export default {
     layout: 'main',
-    name: "home",
     middleware: 'auth',
+    components: {
+      ValidationProvider
+    },
     fetch() {
-      this.getdata()
+      this.getData()
     },
     data() {
       return {
@@ -99,51 +119,78 @@
         email: '',
         name: 'morpheus',
         lastname: '',
-        userdata: [],
         job: 'leader',
         usercreatetable: [],
+        pagesize: 10,
+        datasize: []
 
       }
     },
     methods: {
-      async getdata() {
-        await axios.get('https://reqres.in/api/users', {params: {page: this.pageOn}})
+     getDetail(n){
+       this.$router.push('userProfile')
+     },
+      async getDelete(index) {
+        console.log(index.id)
+        await axios.delete(`https://jsonplaceholder.typicode.com/posts/${index.id}`)
           .then((res) => {
-            this.results = res.data.data
-            console.log('data', res.data.data)
-            this.total_pages = res.data.total_pages
-            console.log('data', res.data.total_pages)
+            if (res.status == 200) {
+              console.log('delete_success')
+            }
+          })
+        this.results = this.results.filter(result => {
+          if (result.id !== index.id) {
+            return result
+          }
+          this.upDateDataSize()
+        })
+
+        // console.log( index.id-1)
+        // console.log(index.id)
+      },
+      upDateDataSize() {
+        this.datasize = this.datasize - 1
+        // this.datasize  = this.results.length
+        console.log(this.datasize)
+
+      },
+      printData(results) {
+        {
+          return results.slice((this.pagesize * this.pageOn) - 10, this.pagesize * this.pageOn)
+        }
+      },
+      async getData() {
+        await axios.get('https://jsonplaceholder.typicode.com/posts')
+          .then((res) => {
+            this.results = res.data
+            console.log('data', res.data)
+            this.datasize = res.data.length
+            console.log('data', this.datasize)
           })
       },
-      changevalue(value) {
+      changeValue(value) {
         this.pageOn = value
-        this.getdata()
       },
-      createuser() {
+      createUser() {
         this.hidetable = 1
         this.hidetable2 = 1
       },
-      async createusertable() {
+      async createUserTable() {
         this.userdata.push({name: this.name, job: this.job})
         await axios.post('https://reqres.in/api/users', {
           name: this.name,
           job: this.job
         }).then((res) => {
           if (res.status === 201) {
-            // this.usercreatetable = res.data
             this.usercreatetable.push(res.data)
-            console.log('res',res)
+            console.log('res', res)
             console.log('tabledata', this.usercreatetable)
 
           }
         })
         this.hidetable2 = 3
 
-      },
-      updateuser() {
-      },
-      deleteuser() {
-      },
+      }
 
     }
   }
@@ -159,6 +206,12 @@
   /*  text-align: center;*/
   /*  !*display: table;*!*/
   /*}*/
+  .postion1 {
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
   .postion {
     margin-top: 5px;
     margin-left: 20px;

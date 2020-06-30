@@ -26,7 +26,6 @@ export default {
   css: [
     '@/assets/css/bootstrap.css'
   ],
-  js:['@/assets/js/bootstrap.js'],
   /*
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins

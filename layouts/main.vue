@@ -4,7 +4,9 @@
       <a class="active" href="/home">Home</a>
       <a v-if="$store.state.token == ''" href="/login">Login</a>
       <a v-if="$store.state.token == ''" href="/register">Register</a>
-      <a v-if="$store.state.token != ''" @click="handleClickLogout">Logout</a>
+      <a v-if="$store.state.token != ''" href="/login" @click="handleClickLogout">Logout</a>
+      <a v-if="$store.state.token != ''" >Token:{{$store.state.token}}</a>
+
 
     </div>
     <nuxt/>
@@ -15,16 +17,9 @@
   export default {
     name: 'main',
     methods: {
-      handleClickLogout() {
-        this.$store.dispatch('Logout')
-          .then(success => {
-            console.log('Logoutsuccess')
-            this.$router.push("/login")
-          })
-          .catch(error => {
-            console.log(error)
-          })
-
+      async handleClickLogout() {
+        await this.$store.dispatch('logout')
+        this.$router.push('/home')
       }
     }
   }
